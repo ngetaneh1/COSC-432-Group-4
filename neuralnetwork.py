@@ -19,11 +19,10 @@ vectorizer.fit(s.getInput())
 
 # encode document
 vector = vectorizer.transform(s.getInput())
-print(vector.shape)
+
 
 X_scale = StandardScaler()
 X = X_scale.fit_transform(vector.toarray())
-print(X.shape)
 y = s.getOutput()
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)
 
@@ -123,10 +122,7 @@ def train_nn(nn_structure, X, y, iter_num=50000, alpha=0.25):
 
 W, b, avg_cost_func = train_nn(nn_structure, X_train, y_v_train)
 
-plt.plot(avg_cost_func)
-plt.ylabel('Average J')
-plt.xlabel('Iteration number')
-plt.show()
+
 
 def predict_y(W, b, X, n_layers):
     m = X.shape[0]
@@ -138,4 +134,10 @@ def predict_y(W, b, X, n_layers):
 
 y_pred = predict_y(W, b, X_test, 3)
 print(accuracy_score(y_test, y_pred)*100)
+
+plt.plot(avg_cost_func)
+plt.ylabel('Average J')
+plt.xlabel('Iteration number')
+plt.show()
+
 print("done")
