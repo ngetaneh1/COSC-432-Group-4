@@ -38,7 +38,7 @@ y_v_test = convert_y_to_vect(y_test)
 
 
 
-nn_structure = [1010, 10, 4]
+nn_structure = [1010, 30, 4]
 
 def f(x):
     return 1 / (1 + np.exp(-x))
@@ -83,7 +83,7 @@ def calculate_hidden_delta(delta_plus_1, w_l, z_l):
     # delta^(l) = (transpose(W^(l)) * delta^(l+1)) * f'(z^(l))
     return np.dot(np.transpose(w_l), delta_plus_1) * f_deriv(z_l)
 
-def train_nn(nn_structure, X, y, iter_num=3000, alpha=0.25):
+def train_nn(nn_structure, X, y, iter_num=10000, alpha=0.25, lamb=0.001):
     W, b = setup_and_init_weights(nn_structure)
     cnt = 0
     m = len(y)
@@ -113,7 +113,7 @@ def train_nn(nn_structure, X, y, iter_num=3000, alpha=0.25):
                     tri_b[l] += delta[l+1]
         # perform the gradient descent step for the weights in each layer
         for l in range(len(nn_structure) - 1, 0, -1):
-            W[l] += -alpha * (1.0/m * tri_W[l])
+            W[l] += -alpha * (1.0/m * tri_W[l] + lamb * W[l])
             b[l] += -alpha * (1.0/m * tri_b[l])
         # complete the average cost calculation
         avg_cost = 1.0/m * avg_cost
@@ -134,6 +134,13 @@ def predict_y(W, b, X, n_layers):
     return y
 
 y_pred = predict_y(W, b, X_test, 3)
+print("This is X-test")
+print(X_test)
+print("This is Test y")
+print (y_test)
+print("This is the predicted y")
+print(y_pred)
+
 print(accuracy_score(y_test, y_pred)*100)
 
 plt.plot(avg_cost_func)
