@@ -25,7 +25,9 @@ X = X_scale.fit_transform(vector.toarray())
 
 y = s.getOutput()
 
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.4)
+X_train, X_holdover, y_train, y_holdover = train_test_split(X, y, test_size=0.4)
+X_valid, X_test, y_valid, y_test = train_test_split(X_holdover, y_holdover,
+                                                    test_size=0.5)
 
 
 def convert_y_to_vect(y):
@@ -34,11 +36,11 @@ def convert_y_to_vect(y):
         y_vect[i, y[i]] = 1
     return y_vect
 y_v_train = convert_y_to_vect(y_train)
-y_v_test = convert_y_to_vect(y_test)
+yv_valid = convert_y_to_vect(y_valid)
 
 
 
-nn_structure = [1010, 30, 4]
+nn_structure = [1010, 10, 4]
 
 def f(x):
     return 1 / (1 + np.exp(-x))
@@ -83,7 +85,7 @@ def calculate_hidden_delta(delta_plus_1, w_l, z_l):
     # delta^(l) = (transpose(W^(l)) * delta^(l+1)) * f'(z^(l))
     return np.dot(np.transpose(w_l), delta_plus_1) * f_deriv(z_l)
 
-def train_nn(nn_structure, X, y, iter_num=10000, alpha=0.25, lamb=0.001):
+def train_nn(nn_structure, X, y, iter_num=3000, alpha=0.25, lamb=0.01):
     W, b = setup_and_init_weights(nn_structure)
     cnt = 0
     m = len(y)
