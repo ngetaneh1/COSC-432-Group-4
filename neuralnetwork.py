@@ -136,10 +136,10 @@ def predict_y(W, b, X, n_layers):
     return y
 
 y_pred = predict_y(W, b, X_valid, 3)
-print("This is X-test")
-print(X_test)
-print("This is Test y")
-print (y_test)
+print("This is X-valid")
+print(X_valid)
+print("This is valid y")
+print (y_valid)
 print("This is the predicted y")
 print(y_pred)
 
