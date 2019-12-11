@@ -135,7 +135,7 @@ def predict_y(W, b, X, n_layers):
         y[i] = np.argmax(h[n_layers])
     return y
 
-y_pred = predict_y(W, b, X_test, 3)
+y_pred = predict_y(W, b, X_valid, 3)
 print("This is X-test")
 print(X_test)
 print("This is Test y")
@@ -143,7 +143,7 @@ print (y_test)
 print("This is the predicted y")
 print(y_pred)
 
-print(accuracy_score(y_test, y_pred)*100)
+print(accuracy_score(y_valid, y_pred) * 100)
 
 plt.plot(avg_cost_func)
 plt.ylabel('Average J')
